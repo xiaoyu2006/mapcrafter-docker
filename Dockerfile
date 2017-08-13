@@ -26,6 +26,7 @@ RUN chmod 0644 /etc/cron.d/mapcrafter-cron
 RUN touch /var/log/cron.log
 
 ADD render.sh /render
+RUN chmod 0777 /render
 ADD render.conf /
 
 CMD cron && tail -f /var/log/cron.log
