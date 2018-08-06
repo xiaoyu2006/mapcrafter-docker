@@ -1,4 +1,4 @@
-FROM ubuntu:17.04
+FROM ubuntu:18.04
 MAINTAINER muebau <hb1c@gmx.net>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -24,6 +24,7 @@ RUN apt-get update && \
 ADD crontab /etc/cron.d/mapcrafter-cron
 RUN chmod 0644 /etc/cron.d/mapcrafter-cron
 RUN touch /var/log/cron.log
+RUN echo "container created" >> /var/log/cron.log
 
 ADD render.sh /render
 RUN chmod 0777 /render
