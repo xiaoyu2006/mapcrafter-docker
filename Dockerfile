@@ -6,12 +6,12 @@ FROM ubuntu as builder
 MAINTAINER muebau <hb1c@gmx.net>
 
 # Get dependency
-RUN apt-get update && apt-get install -y apt-get install libpng-dev libjpeg-turbo8 libboost-iostreams-dev git cmake build-essential libboost-all-dev libjpeg-dev
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-turbo8 libboost-iostreams-dev git cmake build-essential libboost-all-dev libjpeg-dev
 
 # Add the git repo and build it
 RUN mkdir /git && cd /git && \
     git clone --single-branch --branch world113 https://github.com/mapcrafter/mapcrafter.git && \
-    mkdir build && cd build && \
+    cd mapcrafter && mkdir build && cd build && \
     cmake .. && \
     make && \
     mkdir /tmp/mapcrafter && \
@@ -35,7 +35,7 @@ VOLUME ["/world"]
 COPY --from=builder /tmp/mapcrafter/ /
 
 # Depedencies needed for running Mapcrafter
-RUN apt-get update && apt-get install -y apt-get install libpng-dev libjpeg-turbo8 libboost-iostreams-dev git cmake build-essential libboost-all-dev libjpeg-dev && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-turbo8 libboost-iostreams-dev git cmake build-essential libboost-all-dev libjpeg-dev && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD crontab /etc/cron.d/mapcrafter-cron
 RUN chmod 0644 /etc/cron.d/mapcrafter-cron
