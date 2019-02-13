@@ -1,4 +1,27 @@
-FROM ubuntu:18.04
+#
+# Build Image
+#
+
+FROM ubuntu as builder
+MAINTAINER muebau <hb1c@gmx.net>
+
+# Get dependency
+RUN apt-get update && apt-get install -y apt-get install libpng-dev libjpeg-turbo8 libboost-iostreams-dev git cmake build-essential libboost-all-dev libjpeg-dev
+
+# Add the git repo and build it
+RUN mkdir /git && cd /git && \
+    git clone --single-branch --branch world113 https://github.com/mapcrafter/mapcrafter.git && \
+    mkdir build && cd build && \
+    cmake .. && \
+    make && \
+    mkdir /tmp/mapcrafter && \
+    make DESTDIR=/tmp/mapcrafter install
+
+#
+# Final Image
+#
+
+FROM ubuntu
 MAINTAINER muebau <hb1c@gmx.net>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -8,18 +31,11 @@ VOLUME ["/config"]
 VOLUME ["/output"]
 VOLUME ["/world"]
 
-RUN apt-get update && \
-    apt-get -y install python curl wget apt-transport-https cron imagemagick&& \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Mapcrafter, built in previous stage
+COPY --from=builder /tmp/mapcrafter/ /
 
-RUN echo "deb https://packages.mapcrafter.org/ubuntu zesty main" | tee "/etc/apt/sources.list.d/mapcrafter.list" && \
-    wget -O "/etc/apt/trusted.gpg.d/mapcrafter.gpg" "https://packages.mapcrafter.org/ubuntu/keyring.gpg"
-
-RUN apt-get update && \
-    apt-get -y install mapcrafter && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Depedencies needed for running Mapcrafter
+RUN apt-get update && apt-get install -y apt-get install libpng-dev libjpeg-turbo8 libboost-iostreams-dev git cmake build-essential libboost-all-dev libjpeg-dev && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD crontab /etc/cron.d/mapcrafter-cron
 RUN chmod 0644 /etc/cron.d/mapcrafter-cron
