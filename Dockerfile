@@ -39,11 +39,9 @@ RUN apt-get update && apt-get install -y cron libpng-dev libjpeg-turbo8 libboost
 
 ADD crontab /etc/cron.d/mapcrafter-cron
 RUN chmod 0644 /etc/cron.d/mapcrafter-cron
-RUN touch /var/log/cron.log
-RUN echo "container created" >> /var/log/cron.log
 
 ADD render.sh /render
 RUN chmod 0777 /render
 ADD render.conf /
 
-CMD cron && tail -f /var/log/cron.log
+CMD cron -f
