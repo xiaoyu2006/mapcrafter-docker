@@ -35,7 +35,15 @@ VOLUME ["/world"]
 COPY --from=builder /tmp/mapcrafter/ /
 
 # Depedencies needed for running Mapcrafter
-RUN apt-get update && apt-get install -y cron libpng-dev libjpeg-turbo8 libboost-iostreams-dev git cmake build-essential libboost-all-dev libjpeg-dev && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && apt-get install -y cron 
+        libpng16-16 \
+        libjpeg-turbo-progs \
+        libboost-iostreams1.65.1 \
+        libboost-system1.65.1 \
+        libboost-filesystem1.65.1 \
+        libboost-program-options1.65.1 && \
+        && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+        ldconfig
 
 ADD crontab /etc/cron.d/mapcrafter-cron
 RUN chmod 0644 /etc/cron.d/mapcrafter-cron
