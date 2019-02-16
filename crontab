@@ -1,2 +1,3 @@
-*/10 * * * * root /render
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+*/10 * * * * root /render > /proc/1/fd/1 2>/proc/1/fd/2
 # Don't remove the empty line at the end of this file. It is required to run the cron job
