@@ -2,7 +2,7 @@
 # Build Image
 #
 
-FROM ubuntu as builder
+FROM ubuntu:18.04 as mapcrafter1.13-builder
 MAINTAINER muebau <hb1c@gmx.net>
 
 # Get dependency
@@ -21,7 +21,7 @@ RUN mkdir /git && cd /git && \
 # Final Image
 #
 
-FROM ubuntu
+FROM ubuntu:18.04
 MAINTAINER muebau <hb1c@gmx.net>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -32,7 +32,7 @@ VOLUME ["/output"]
 VOLUME ["/world"]
 
 # Mapcrafter, built in previous stage
-COPY --from=builder /tmp/mapcrafter/ /
+COPY --from=mapcrafter1.13-builder /tmp/mapcrafter/ /
 
 # Depedencies needed for running Mapcrafter
 RUN apt-get update && apt-get install -y cron \
@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y cron \
         libboost-system1.65.1 \
         libboost-filesystem1.65.1 \
         libboost-program-options1.65.1 && \
-        apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+        apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* &&\
         ldconfig
 
 ADD crontab /etc/cron.d/mapcrafter-cron
