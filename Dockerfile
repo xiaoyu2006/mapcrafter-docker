@@ -16,7 +16,7 @@ RUN mkdir /git && cd /git && \
     cd mapcrafter && \
     mkdir build && cd build && \
     cmake .. && \
-    make && \
+    make -j4 && \
     mkdir /mapcrafter && \
     make DESTDIR=/mapcrafter install
 
@@ -38,10 +38,10 @@ COPY --from=mapcrafter1.12-builder /mapcrafter/ /
 RUN apt-get update && apt-get install -y \
         libpng16-16 \
         libjpeg-turbo-progs \
-        libboost-iostreams1.65.1 \
-        libboost-system1.65.1 \
-        libboost-filesystem1.65.1 \
-        libboost-program-options1.65.1 && \
+        libboost-iostreams1.71.0 \
+        libboost-system1.71.0 \
+        libboost-filesystem1.71.0 \
+        libboost-program-options1.71.0 && \
         apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
         ldconfig
 
