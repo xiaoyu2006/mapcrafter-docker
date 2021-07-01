@@ -8,11 +8,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Get dependency
 RUN apt-get update && \
-    apt-get install -y libpng-dev libjpeg-turbo8 libboost-iostreams-dev git cmake build-essential libboost-all-dev libjpeg-dev
+    apt-get install -y libpng-dev libjpeg-turbo8 git cmake build-essential libboost-all-dev libjpeg-dev
 
 # Add the git repo and build it
 RUN mkdir /git && cd /git && \
-    git clone --single-branch --depth=1 https://github.com/xiaoyu2006/mapcrafter.git && \
+    git clone --single-branch --depth=1 https://github.com/ynf-mc/mapcrafter.git && \
     cd mapcrafter && \
     mkdir build && cd build && \
     cmake .. && \
