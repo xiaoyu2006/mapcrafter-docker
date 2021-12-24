@@ -12,7 +12,7 @@ RUN apt-get update && \
 
 # Add the git repo and build it
 RUN mkdir /git && cd /git && \
-    git clone --single-branch --depth=1 https://github.com/ynf-mc/mapcrafter.git && \
+    git clone --single-branch --depth=1 https://github.com/ynf-mc/mapcrafter.git -b world116 && \
     cd mapcrafter && \
     mkdir build && cd build && \
     cmake .. && \
