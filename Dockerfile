@@ -2,7 +2,7 @@
 # Build Image
 #
 
-FROM ubuntu:20.04 as mapcrafter1.12-builder
+FROM ubuntu:20.04 as mapcrafter-builder
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -32,7 +32,7 @@ ENV HOME /
 VOLUME ["/workspace"]
 
 # Mapcrafter, built in previous stage
-COPY --from=mapcrafter1.12-builder /mapcrafter/ /
+COPY --from=mapcrafter-builder /mapcrafter/ /
 
 # Depedencies needed for running Mapcrafter
 RUN apt-get update && apt-get install -y \
